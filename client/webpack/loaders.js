@@ -7,7 +7,7 @@ var bundle = function(config) {
     loader: 'bundle-loader',
     query: {
       lazy: true,
-      name: '[1][2]/' + config.entrie + '/' + config.env + '/js/[1]',
+      name: '[1][2]/' + config.entrie + '/' + config.relenv + '/js/[1]',
       regExp: 'packages\\/(.+)(-worona)\\/',
     },
     exclude: new RegExp('core-' + config.entrie + '-worona'),
@@ -23,7 +23,7 @@ var babel = function(config) {
 };
 
 var css = function(config) {
-  if (config.env === 'dev' || config.type === 'core') {
+  if (config.relenv === 'dev' || config.type === 'core') {
     return {
       test: /\.css$/,
       loaders: [
@@ -44,7 +44,7 @@ var css = function(config) {
 };
 
 var sass = function(config) {
-  if (config.env === 'dev' || config.type === 'core') {
+  if (config.relenv === 'dev' || config.type === 'core') {
     return {
       test: /\.s[ac]ss$/,
       loaders: [
@@ -69,7 +69,7 @@ var image = function(config) {
     test: /\.(png|jpg|gif)$/,
     loader: 'file-loader',
     query: {
-      name: '[1]/' + config.entrie + '/' + config.env + '/images/[name].[hash].[ext]',
+      name: '[1]/' + config.entrie + '/' + config.relenv + '/images/[name].[hash].[ext]',
       regExp: 'packages\\/([^\\/]+)\\/',
     },
   };
@@ -80,7 +80,7 @@ var font = function(config) {
     test: /\.(eot|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
     loader: 'file-loader',
     query: {
-      name: '[1]/' + config.entrie + '/' + config.env + '/fonts/[name].[hash].[ext]',
+      name: '[1]/' + config.entrie + '/' + config.relenv + '/fonts/[name].[hash].[ext]',
       regExp: 'packages\\/([^\\/]+)\\/',
     },
   };
@@ -91,7 +91,7 @@ var locale = function(config) {
     test: /locales\/.+\.json$/,
     loader: 'bundle-loader',
     query: {
-      name: '[1]/' + config.entrie + '/' + config.env + '/locales/[name]',
+      name: '[1]/' + config.entrie + '/' + config.relenv + '/locales/[name]',
       regExp: 'packages\\/([^\\/]+)\\/',
     },
   };

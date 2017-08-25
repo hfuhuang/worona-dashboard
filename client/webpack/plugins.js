@@ -8,7 +8,7 @@ var FixModuleIdAndChunkIdPlugin = require('fix-moduleid-and-chunkid-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var definePlugin = function(config) {
-  var nodeEnv = config.env === 'dev' ? 'development' : 'production';
+  var nodeEnv = config.relenv === 'dev' ? 'development' : 'production';
   return new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify(nodeEnv) } });
 };
 
@@ -22,36 +22,36 @@ var lodashModuleReplacementPlugin = function() {
 };
 
 var uglifyJsPlugin = function(config) {
-  if (config.env === 'prod')
+  if (config.relenv === 'prod')
     return new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } });
 };
 
 var dedupePlugin = function(config) {
-  if (config.env === 'prod')
+  if (config.relenv === 'prod')
     return new webpack.optimize.DedupePlugin();
 };
 
 var occurrenceOrderPlugin = function(config) {
-  if (config.env === 'prod')
+  if (config.relenv === 'prod')
     return new webpack.optimize.OccurrenceOrderPlugin();
 };
 
 var extractTextPlugin = function(config) {
-  if (config.env === 'prod')
+  if (config.relenv === 'prod')
     return new ExtractTextPlugin('css/' + config.name + '.[contenthash].css');
 };
 
 var dllReferencePlugin = function(config) {
   return new webpack.DllReferencePlugin({
     context: path.resolve('packages/vendors-' + config.entrie + '-worona'),
-    manifest: require('../dist/vendors-' + config.entrie + '-worona/' + config.entrie + '/' + config.env + '/json/manifest.json'),
+    manifest: require('../dist/vendors-' + config.entrie + '-worona/' + config.entrie + '/' + config.relenv + '/json/manifest.json'),
   });
 };
 
 var dllPlugin = function(config) {
   return new webpack.DllPlugin({
     // context: path.resolve('packages', 'core-' + config.entrie + '-worona'),
-    path: path.resolve('..', '..', 'dist', config.name, config.entrie, config.env, 'json', 'manifest.json'),
+    path: path.resolve('..', '..', 'dist', config.name, config.entrie, config.relenv, 'json', 'manifest.json'),
     name: 'vendors_' + config.entrie + '_worona',
   });
 };
@@ -67,7 +67,7 @@ var contextReplacementPlugin = function() {
 var statsWriterPlugin = function(config) {
   var output = { files: [] };
   return new StatsWriterPlugin({
-    filename: config.name + '/' + config.entrie + '/' + config.env + '/files.json',
+    filename: config.name + '/' + config.entrie + '/' + config.relenv + '/files.json',
     fields: ['assets', 'chunks'],
     transform: function (data) {
       data.assets.forEach(function(asset) {
@@ -103,7 +103,7 @@ var statsWriterPlugin = function(config) {
 
 var htmlWebpackPlugin = function(config) {
   var publicPath = config.remote ? 'https://cdn.worona.io/' : 'http://localhost:4000/';
-  var vendors = require('../dist/vendors-' + config.entrie + '-worona/' + config.entrie + '/' + config.env + '/files.json')
+  var vendors = require('../dist/vendors-' + config.entrie + '-worona/' + config.entrie + '/' + config.relenv + '/files.json')
   return new HtmlWebpackPlugin({
     inject: false,
     title: 'Worona Dashboard (DEV)',
@@ -113,7 +113,7 @@ var htmlWebpackPlugin = function(config) {
     devServer: 'http://localhost:4000',
     window: {
       publicPath: publicPath,
-      __worona__: { [config.env]: true, remote: config.location === 'remote' },
+      __worona__: { [config.relenv]: true, remote: config.location === 'remote' },
     },
     appMountId: 'root',
     minify: { preserveLineBreaks: true, collapseWhitespace: true },

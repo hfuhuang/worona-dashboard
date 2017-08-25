@@ -28,20 +28,20 @@ const start = async () => {
   await spawn('./node_modules/.bin/webpack', [
     '--config', '../../webpack.config.js',
     '--progress',
-    '--name', 'vendors-dashboard-worona',
-    '--entrie', 'dashboard',
-    '--type', 'vendors',
-    '--env', env,
+    '--env.name', 'vendors-dashboard-worona',
+    '--env.entrie', 'dashboard',
+    '--env.type', 'vendors',
+    '--env.relenv', env
   ], { cwd: path.resolve('packages', 'vendors-dashboard-worona'), stdio: 'inherit' });
 
   // Run webpack-dev-server.
   const webpack = config.build ? 'webpack' : 'webpack-dev-server';
   await spawn(`./node_modules/.bin/${webpack}`, ['--config', 'webpack.config.js',
-    '--name', 'core-dashboard-worona',
-    '--entrie', 'dashboard',
-    '--type', 'core',
-    '--env', env,
-    '--location', location,
+    '--env.name', 'core-dashboard-worona',
+    '--env.entrie', 'dashboard',
+    '--env.type', 'core',
+    '--env.relenv', env,
+    '--env.location', location,
   ], { stdio: 'inherit' });
 };
 

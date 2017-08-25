@@ -5,56 +5,72 @@ var plugins = require('./webpack/plugins');
 var output = require('./webpack/output');
 var loaders = require('./webpack/loaders');
 
-switch (config.type) {
-  case 'vendors':
+var env = config.env;
+process.traceDeprecation = true
+
+const util = require('util');
+console.log(util.inspect(env, {showHidden: false, depth: null}));
+console.log('\nLet\'s check webpack config.\n');
+switch (env.type) {
+  case 'vendors':	  
     var pluginsArr = [
-      plugins.definePlugin(config),
-      plugins.uglifyJsPlugin(config),
+      plugins.definePlugin(env),
+      plugins.uglifyJsPlugin(env),
       // plugins.dedupePlugin(config),
-      plugins.occurrenceOrderPlugin(config),
-      plugins.dllPlugin(config),
-      plugins.fixModuleIdAndChunkIdPlugin(config),
-      plugins.statsWriterPlugin(config),
-    ].filter(function(plugin) { return typeof plugin !== 'undefined'; });
+      plugins.occurrenceOrderPlugin(env),
+      plugins.dllPlugin(env),
+      //plugins.fixModuleIdAndChunkIdPlugin(),
+      plugins.statsWriterPlugin(env),
+    ].filter(function(plugin) { return typeof plugin !== 'undefined'; });    
     module.exports = {
       entry: { main: require('./packages/vendors-dashboard-worona/vendors.json') },
-      output: output.vendors(config),
+      output: output.vendors(env),
       plugins: pluginsArr,
     };
     break;
 
   case 'core': // Extensions and Themes.
     var pluginsArr = [
-      plugins.definePlugin(config),
-      plugins.dllReferencePlugin(config),
-      plugins.lodashModuleReplacementPlugin(config),
+      plugins.definePlugin(env),
+      plugins.dllReferencePlugin(env),
+      plugins.lodashModuleReplacementPlugin(env),
       plugins.contextReplacementPlugin(),
-      plugins.htmlWebpackPlugin(config),
+      plugins.htmlWebpackPlugin(env),
     ].filter(function(plugin) { return typeof plugin !== 'undefined'; });
     var loadersArr = [
-      loaders.bundle(config),
-      loaders.babel(config),
-      loaders.css(config),
-      loaders.sass(config),
-      loaders.image(config),
-      loaders.font(config),
-      loaders.locale(config),
-      loaders.json(config),
+      loaders.bundle(env),
+      loaders.babel(env),
+      loaders.css(env),
+      loaders.sass(env),
+      loaders.image(env),
+      loaders.font(env),
+      loaders.locale(env),
+      loaders.json(env),
     ].filter(function(loader) { return typeof loader !== 'undefined'; });
     module.exports = {
       entry: { main: [
-        'script!systemjs/dist/system.js',
+        'script-loader!systemjs/dist/system.js',
         './development/entry.js',
-        './packages/' + config.name + '/src/' + config.entrie + '/index.js',
+        './packages/' + env.name + '/src/' + env.entrie + '/index.js',
       ] },
-      output: output.core(config),
+      output: output.core(env),
       module: { loaders: loadersArr },
       resolve: {
-        extensions: ['', '.js', '.jsx'],
-        modulesDirectories: [
+        extensions: ['.js', '.jsx'],
+        modules: [
           'node_modules',
           'packages/vendors-dashboard-worona/node_modules',
         ],
+        alias: {
+        	'lodash/object/omit': 'lodash/omit',
+        	'lodash/object/extend': 'lodash/extend',
+        	'lodash/lang/isObject': 'lodash/isObject',
+        	'lodash/lang/isEqual': 'lodash/isEqual',
+        	'lodash/collection/forEach': 'lodash/forEach',
+        	'lodash/collection/each': 'lodash/each',
+        	'lodash/collection/pluck': 'lodash/map',
+        	'lodash/object/keys': 'lodash/keys',
+        },
       },
       // devtool: '#eval-source-map',
       devServer: {
@@ -62,9 +78,10 @@ switch (config.type) {
     		noInfo: false,
     		inline: true,
         port: 4000,
+        host: "0.0.0.0",
         historyApiFallback: true,
     	},
-      postcss: function() { return [require('postcss-cssnext')()]; },
+      // postcss: function() { return [require('postcss-cssnext')()]; },
       stats: { children: false },
       plugins: pluginsArr,
     };

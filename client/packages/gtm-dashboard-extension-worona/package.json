@@ -3,7 +3,7 @@
   "version": "1.0.6",
   "description": "Extension for Google Tag Manager stuff.",
   "scripts": {
-    "test": "NODE_PATH=../core-dashboard-worona/node_modules ava src/dashboard/tests/**/*.js --watch --verbose --require babel-register --require babel-polyfill"
+    "test": "NODE_PATH=../core-dashboard-worona/node_modules ava src/dashboard/tests/**/*.js --watch --verbose"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,9 @@
       "namespace": "gtm"
     }
   },
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "babel-register": "^6.24.1",
+    "worona-deps": "^2.0.3"
+  },
+  "dependencies": {"lodash": "^4.16.4"}
 }

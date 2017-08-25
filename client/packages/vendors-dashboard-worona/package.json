@@ -30,7 +30,10 @@
       "namespace": "vendors"
     }
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-register": "^6.24.1",
+    "worona-deps": "^2.0.3"
+  },
   "dependencies": {
     "classnames": "2.2.5",
     "fastclick": "1.0.6",
@@ -38,8 +41,8 @@
     "i18next-xhr-backend": "1.2.0",
     "normalizr": "^3.0.1",
     "process": "0.11.9",
-    "react": "15.3.2",
-    "react-dom": "15.3.2",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "react-helmet": "^4.0.0",
     "react-i18next": "1.10.1",
     "react-redux": "4.4.5",
@@ -51,7 +54,7 @@
     "reselect": "2.5.4",
     "stringify-error-message": "1.0.2",
     "superagent": "2.3.0",
-    "webpack": "1.13.3",
+    "webpack": "^3.0.0",
     "worona-deps": "^1.11.1",
     "worona-polyfills": "1.0.0"
   }

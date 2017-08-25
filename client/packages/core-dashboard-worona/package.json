@@ -3,7 +3,7 @@
   "version": "1.4.1",
   "description": "Core Package of Worona Dashboard",
   "scripts": {
-    "test": "NODE_PATH=../core-dashboard-worona/node_modules gstava src/**/tests/**/*.js --watch --verbose --require babel-register --require babel-polyfill"
+    "test": "NODE_PATH=../core-dashboard-worona/node_modules gstava src/**/tests/**/*.js --watch --verbose"
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,13 @@
       "namespace": "core"
     }
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-register": "^6.24.1",
+    "worona-deps": "^2.0.3"
+  },
   "dependencies": {
     "lodash": "^4.16.4",
+    "history": "^4.6.3",
     "redux-devtools-extension": "^1.0.0",
     "redux-logger": "^2.8.2",
     "systemjs": "^0.19.39"
