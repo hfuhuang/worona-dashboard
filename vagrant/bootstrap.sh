@@ -51,5 +51,5 @@ npm install -g meteorite
 
 #echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
-cd /vagrant/worona-dashboard && rm -rf ./server/.meteor/local
-cd /vagrant/worona-dashboard && find . -name "node_modules" -type d -exec rm -r "{}" \;
+#cd /home/vagrant/worona-dashboard && rm -rf ./server/.meteor/local
+#cd /home/vagrant/worona-dashboard && find . -name "node_modules" -type d -exec rm -r "{}" \;
