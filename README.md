@@ -54,7 +54,19 @@ npm start
 
 ---
 
+## Vagrant Test Environment
+Preconditions:
+  VirturalBox installation. See https://www.virtualbox.org/manual/UserManual.html
+Run `vagrant up` to start an Ubuntu VM 
+
+Run `vagrant ssh` to login to the Ubuntu VM
+
+Run the Development Commands listed above.
+
+
 
 ## Error tracking 
 
 <a href="http://www.rollbar.com"><img alt="Error Tracking" src="https://d26gfdfi90p7cf.cloudfront.net/rollbar-badge.144534.o.png" width="108"></a>
+
+

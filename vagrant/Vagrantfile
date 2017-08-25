@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+  
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.http     = "http://proxy.host:port/"
+    config.proxy.https    = "http://proxy.host:port/"
+    config.proxy.no_proxy = "localhost,127.0.0.1"
+  end
+ 
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.box = "hashicorp/precise64"
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:3000" will access port 3000 on the guest machine (VM).
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 4000, host: 4000
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  config.vm.provider "virtualbox" do |vb|
+    
+    vb.customize ["modifyvm", :id, "--ioapic", "on"] # This is needed for multiple CPUs
+    vb.customize ["modifyvm", :id, "--memory", "4096"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+  end
+
+  # this is your local SVN checkout dir
+  config.vm.synced_folder "../", "/vagrant/worona-dashboard", create: true, owner: "vagrant", group: "vagrant", mount_options: ["rw", "nosuid"]
+      
+  #provsion the box using the our bootstrap shell script i
+  config.vm.provision "shell" do |s|
+    s.path = "../vmsetup/bootstrap.sh"
+    s.keep_color = true
+  end
+
+end
